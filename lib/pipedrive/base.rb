@@ -20,7 +20,7 @@ module Pipedrive
     format :json
 
     extend Forwardable
-    def_delegators 'self.class', :get, :post, :put, :resource_path, :bad_response
+    def_delegators 'self.class', :get, :post, :put, :delete, :resource_path, :bad_response
 
     attr_reader :data
 
@@ -94,6 +94,11 @@ module Pipedrive
         res = get "#{resource_path}/#{id}"
         res.ok? ? new(res) : bad_response(res)
       end
+
+			def delete(id)
+				res = delete "#{resource_path}/#{id}"
+				res.ok? ? new(res) : bad_response(res)
+			end
 
       def find_by_name(name, opts={})
         res = get "#{resource_path}/find", :query => { :term => name }.merge(opts)
